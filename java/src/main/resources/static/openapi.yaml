@@ -1,0 +1,63 @@
+openapi: 3.0.3
+info:
+  title: XA Bank Time Deposits
+  version: 1.0.0
+paths:
+  /time-deposits:
+    get:
+      summary: List all time deposits
+      operationId: getTimeDeposits
+      responses:
+        "200":
+          description: All time deposits
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TimeDeposit"
+  /time-deposits/balance-updates:
+    post:
+      summary: Apply one month of interest to every time deposit
+      operationId: updateBalances
+      responses:
+        "200":
+          description: Deposits after the balance update
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TimeDeposit"
+components:
+  schemas:
+    TimeDeposit:
+      type: object
+      required: [id, planType, balance, days, withdrawals]
+      properties:
+        id:
+          type: integer
+        planType:
+          type: string
+        balance:
+          type: number
+          format: double
+        days:
+          type: integer
+        withdrawals:
+          type: array
+          items:
+            $ref: "#/components/schemas/Withdrawal"
+    Withdrawal:
+      type: object
+      required: [id, timeDepositId, amount, date]
+      properties:
+        id:
+          type: integer
+        timeDepositId:
+          type: integer
+        amount:
+          type: number
+        date:
+          type: string
+          format: date
