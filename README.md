@@ -70,3 +70,19 @@ A junior developer implemented domain logic for a time deposit system but did no
 ### Submission Instructions
 - Provide clear instructions on how to trigger the endpoints using the Swagger contract.
 - Email the link to your public GitHub repository.
+
+## Run the API
+
+Start PostgreSQL:
+
+    docker run --name timedeposit-postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=timedeposit -p 5432:5432 -d postgres:16-alpine
+
+From the `java` directory:
+
+    mvn spring-boot:run
+
+Open http://localhost:8080/swagger-ui.html.
+
+1. `GET /time-deposits` — Execute. The response lists the four seeded deposits, including withdrawals.
+2. `POST /time-deposits/balance-updates` — Execute. No request body. Balances are recalculated for one month. Days stay the same. Basic `1000.00` at 31 days becomes `1000.83`. Premium at 45 days stays `1000.00`. Premium at 46 days becomes `1004.17`. Student at 365 days becomes `1002.50`.
+3. Call `GET /time-deposits` again to see that the new balances were stored.
